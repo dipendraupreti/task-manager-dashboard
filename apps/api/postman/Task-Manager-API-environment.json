@@ -1,0 +1,12 @@
+{
+  "id": "task-manager-api-env",
+  "name": "Task Manager API - Local",
+  "values": [
+    { "key": "API_URL", "value": "http://localhost:2080", "enabled": true },
+    { "key": "token", "value": "", "enabled": true },
+    { "key": "taskId", "value": "", "enabled": true }
+  ],
+  "_postman_variable_scope": "environment",
+  "_postman_exported_at": "2025-11-29T00:00:00Z",
+  "_postman_exported_using": "task-manager-assistant"
+}

@@ -1,0 +1,156 @@
+{
+  "info": {
+    "name": "Task Manager API",
+    "description": "Postman collection for the Task Manager API — includes Auth + Tasks flows (register, login, logout, task CRUD).",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_postman_id": "task-manager-api-collection"
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Test User\",\n  \"email\": \"test@example.com\",\n  \"password\": \"password123\"\n}"
+            },
+            "url": { "raw": "{{API_URL}}/api/register", "host": ["{{API_URL}}"], "path": ["api","register"] }
+          },
+          "response": []
+        },
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"test@example.com\",\n  \"password\": \"password123\"\n}"
+            },
+            "url": { "raw": "{{API_URL}}/api/login", "host": ["{{API_URL}}"], "path": ["api","login"] }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// store token from response body in environment variable 'token'",
+                  "const res = pm.response.json();",
+                  "if (res && res.token) {",
+                  "  pm.environment.set('token', res.token);",
+                  "}",
+                  "// if server sets cookie you may want to store cookie value as well",
+                  "const cookieToken = pm.cookies.get('token');",
+                  "if (cookieToken) pm.environment.set('token', cookieToken);"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": { "raw": "{{API_URL}}/api/logout", "host": ["{{API_URL}}"], "path": ["api","logout"] }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Tasks",
+      "item": [
+        {
+          "name": "Fetch Tasks",
+          "request": {
+            "method": "GET",
+            "header": [ { "key": "Authorization", "value": "Bearer {{token}}" } ],
+            "url": { "raw": "{{API_URL}}/api/tasks?page=1&limit=10", "host": ["{{API_URL}}"], "path": ["api","tasks"], "query": [ {"key":"page","value":"1"},{"key":"limit","value":"10"} ] }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Task",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Write documentation\",\n  \"description\": \"Prepare API docs for Postman import\",\n  \"priority\": 3,\n  \"end_date\": \"2026-01-01T12:00:00.000Z\"\n}"
+            },
+            "url": { "raw": "{{API_URL}}/api/tasks", "host": ["{{API_URL}}"], "path": ["api","tasks"] }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res && res.id) pm.environment.set('taskId', res.id);",
+                  "// helpful: ensure token persists",
+                  "if (!pm.environment.get('token')) {",
+                  "  const cookieToken = pm.cookies.get('token');",
+                  "  if (cookieToken) pm.environment.set('token', cookieToken);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "Update Task",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": { "mode": "raw", "raw": "{\n  \"title\": \"Write docs (updated)\",\n  \"priority\": 2\n}" },
+            "url": { "raw": "{{API_URL}}/api/tasks/{{taskId}}", "host": ["{{API_URL}}"], "path": ["api","tasks","{{taskId}}"] }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Task",
+          "request": {
+            "method": "DELETE",
+            "header": [ { "key": "Authorization", "value": "Bearer {{token}}" } ],
+            "url": { "raw": "{{API_URL}}/api/tasks/{{taskId}}", "host": ["{{API_URL}}"], "path": ["api","tasks","{{taskId}}"] }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "exec": [
+          "// add a default header helper if you want; left empty on purpose"
+        ]
+      }
+    }
+  ],
+  "variable": [
+    { "key": "API_URL", "value": "http://localhost:2080" },
+    { "key": "token", "value": "" },
+    { "key": "taskId", "value": "" }
+  ]
+}
