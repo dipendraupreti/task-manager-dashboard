@@ -4,8 +4,8 @@
   "description": "",
   "main": "dist/index.js",
   "scripts": {
-    "build": "tsc && copyfiles migrations/*.sql dist",
     "start": "node dist/index.js",
+    "build": "tsc && copyfiles migrations/*.sql dist",
     "dev": "node --import=tsx --watch src/index.ts",
     "lint": "eslint --ext .ts src",
     "lint:fix": "eslint --ext .ts src --fix",
