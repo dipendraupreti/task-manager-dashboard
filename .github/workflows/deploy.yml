@@ -53,10 +53,10 @@ jobs:
           cache: pnpm
           cache-dependency-path: pnpm-lock.yaml
 
-      - uses: pnpm/action-setup@v4
-        with:
-          version: ${{ env.PNPM_VERSION }}
-          standalone: true
+      - name: Enable pnpm via Corepack
+        run: |
+          corepack enable
+          corepack prepare pnpm@${PNPM_VERSION} --activate
 
       - name: Install workspace dependencies
         run: pnpm install --frozen-lockfile
@@ -150,10 +150,10 @@ jobs:
           cache: pnpm
           cache-dependency-path: pnpm-lock.yaml
 
-      - uses: pnpm/action-setup@v4
-        with:
-          version: ${{ env.PNPM_VERSION }}
-          standalone: true
+      - name: Enable pnpm via Corepack
+        run: |
+          corepack enable
+          corepack prepare pnpm@${PNPM_VERSION} --activate
 
       - name: Install workspace dependencies
         run: pnpm install --frozen-lockfile
