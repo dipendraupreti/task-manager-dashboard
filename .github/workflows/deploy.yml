@@ -56,6 +56,7 @@ jobs:
       - uses: pnpm/action-setup@v4
         with:
           version: ${{ env.PNPM_VERSION }}
+          standalone: true
 
       - name: Install workspace dependencies
         run: pnpm install --frozen-lockfile
@@ -152,6 +153,7 @@ jobs:
       - uses: pnpm/action-setup@v4
         with:
           version: ${{ env.PNPM_VERSION }}
+          standalone: true
 
       - name: Install workspace dependencies
         run: pnpm install --frozen-lockfile
