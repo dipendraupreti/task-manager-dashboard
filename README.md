@@ -2,6 +2,10 @@
 
 Lightweight task manager web app (React frontend + Express/TypeScript API) with JWT auth and PostgreSQL.
 
+<p align="center">
+	<img src="docs/hero.png" alt="Task Manager Dashboard UI" width="720" />
+</p>
+
 ## Requirements
 - Node.js (>= 18)
 - pnpm (uses workspace - recommended version: same as `package.json`'s `packageManager`)
