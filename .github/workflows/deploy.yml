@@ -125,6 +125,7 @@ jobs:
       AWS_REGION: ${{ vars.AWS_REGION }}
       S3_BUCKET: ${{ vars.S3_BUCKET }}
       CLOUDFRONT_DISTRIBUTION_ID: ${{ vars.CLOUDFRONT_DISTRIBUTION_ID }}
+      VITE_API_URL: ${{ vars.VITE_API_URL }}
     steps:
       - uses: actions/checkout@v4
 
@@ -132,7 +133,7 @@ jobs:
         run: |
           set -euo pipefail
           missing=()
-          for var in AWS_REGION S3_BUCKET; do
+          for var in AWS_REGION S3_BUCKET VITE_API_URL; do
             if [ -z "${!var:-}" ]; then
               missing+=("$var")
             fi

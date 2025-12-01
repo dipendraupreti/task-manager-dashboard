@@ -43,8 +43,6 @@ export default function Register(){
             </div>
           </form>
         </div>
-
-        <p className="mt-4 text-center muted">We’ll never share your details — ours is a safe space.</p>
       </div>
     </div>
   )
